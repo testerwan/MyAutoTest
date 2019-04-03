@@ -1,1 +1,2 @@
 # MyAutoTest
+基于SpringBoot和restAssured封装的api自动化测试框架
