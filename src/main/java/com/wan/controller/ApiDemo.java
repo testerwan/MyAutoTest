@@ -20,14 +20,11 @@ public class ApiDemo {
 
     @PostMapping("/account/register")
     public String register(@RequestParam Map<String, String> paramMap) {
-
-
         String url = paramMap.get("url");
 
         Response response = given().contentType(ContentType.JSON).body(CMD.getParams(paramMap)).post(url);
         System.err.println("实际返回结果::" + response.asString());
         return response.asString();
     }
-
 
 }
