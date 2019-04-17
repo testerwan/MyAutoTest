@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fdd.api.client.dto.BaseDTO;
 import com.fdd.api.client.util.SignUtil;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 public class CMD {
     public static String getFormatTimeStamp() {
@@ -37,6 +40,10 @@ public class CMD {
         Map<String, String> params = new HashMap<>();
 
         paramMap.remove("url");
+        if (paramMap.containsKey("file")) {
+            paramMap.remove("file");
+
+        }
         for (String key : paramMap.keySet()) {
             businessParams.put(key, paramMap.get(key));
         }
@@ -56,5 +63,29 @@ public class CMD {
         return jsonObject;
     }
 
+
+    public static void inputstreamtofile(InputStream ins, File file) throws IOException {
+        OutputStream os = new FileOutputStream(file);
+        int bytesRead = 0;
+        byte[] buffer = new byte[8192];
+        while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+        os.close();
+        ins.close();
+    }
+
+    public static File MultipartFile2File(MultipartFile file) throws IOException {
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        // 获取文件后缀
+        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        // 用uuid作为文件名，防止生成的临时文件重复
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        File upload = File.createTempFile(uuid, prefix);
+        // MultipartFile to File
+        file.transferTo(upload);
+        return upload;
+    }
 
 }
