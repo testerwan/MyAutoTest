@@ -25,20 +25,17 @@ public class ApiDemo {
     public String register(@RequestParam Map<String, String> paramMap) {
         String url = paramMap.get("url");
 
-        Response response = given().contentType(ContentType.JSON).body(CMD.getParams(paramMap)).post(url);
+        Response response = given().contentType(ContentType.JSON).body(CMD.getParams2(paramMap)).post(url);
         System.err.println("实际返回结果::" + response.asString());
         return response.asString();
     }
 
 
     @PostMapping("/file/upload")
-    public String upload(@RequestParam Map<String, String> paramMap, @RequestParam("file") MultipartFile file) throws IOException {
+    public String upload(@RequestParam Map<String, String> paramMap, @RequestParam("file") MultipartFile file1) throws IOException {
         String url = paramMap.get("url");
-        Map<String, Object> map=new HashMap<>();
-        map = CMD.getParams(paramMap);
-        map.put("file",file);
-        Response response = given().multiPart((File) file).params(map).post(url);
 
+        Response response = given().multiPart(CMD.MultipartFile2File(file1)).params(CMD.getParams2(paramMap)).post(url);
         System.err.println("实际返回结果::" + response.asString());
         return response.asString();
     }

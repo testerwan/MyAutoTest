@@ -67,31 +67,37 @@
     </div>
 
     <div class="layui-body">
-        <form action="http://localhost:8888/account/register" method="post">
+        <form action="http://localhost:8888/file/upload" method="post" enctype="multipart/form-data">
             <div style="height: 100px">
 
             </div>
             <div class="layui-form-item" style="width: 500px">
-                <label class="layui-form-label">注册类型</label>
+                <label class="layui-form-label">docType</label>
                 <div class="layui-input-block">
-                    <input type="text" name="type" lay-verify="title" autocomplete="off" placeholder="（1:个人账号 2:企业账号）"
+                    <input type="text" name="docType" lay-verify="title" autocomplete="off" placeholder=""
                            class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item" style="width: 500px">
-                <label class="layui-form-label">账号</label>
+                <label class="layui-form-label">uploadType</label>
                 <div class="layui-input-block">
-                    <input type="text" name="account" lay-verify="title" autocomplete="off" class="layui-input">
+                    <input type="text" name="uploadType" lay-verify="title" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" style="width: 500px">
+                <label class="layui-form-label">file</label>
+                <div class="layui-input-block">
+                    <input type="file" name="file" lay-verify="title" autocomplete="off" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item" style="width: 500px;margin-left: 200px">
-                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">上传文件</button>
             </div>
 
 
-            <input type="hidden" name="url" value="http://40.73.0.97:8070/account/register">
+            <input type="hidden" name="url" value="http://40.73.0.97:8070/file/upload">
         </form>
 
         <br>

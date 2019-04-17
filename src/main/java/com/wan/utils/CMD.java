@@ -10,10 +10,7 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 
 public class CMD {
     public static String getFormatTimeStamp() {
@@ -31,13 +28,13 @@ public class CMD {
         return SignUtil.sign(bDto, businessParams);
     }
 
-    public static JSONObject getParams(Map<String, String> paramMap) {
+    public static JSONObject getParams2(Map<String, String> paramMap) {
 
         String timeStamp = getFormatTimeStamp();
 
         Map<String, String> businessParams = new TreeMap<>();
 
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new LinkedHashMap();
 
         paramMap.remove("url");
         if (paramMap.containsKey("file")) {
@@ -57,9 +54,36 @@ public class CMD {
         params.put("sign", sign.getSign());
         params.put("bizContent", sign.getBizContent());
 
+        System.out.println("params" + params);
         JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(params));
-        System.err.println("实际请求内容:" + jsonObject);
+        System.out.println("实际请求内容:" + jsonObject);
 
+        return jsonObject;
+    }
+
+    public static JSONObject getParams(Map<String, String> paramMap) {
+
+        String timeStamp = getFormatTimeStamp();
+
+        Map<String, String> businessParams = new TreeMap<>();
+
+        Map<String, String> params = new LinkedHashMap();
+
+
+        for (String key : paramMap.keySet()) {
+            businessParams.put(key, paramMap.get(key));
+        }
+
+        BaseDTO sign = getSign(timeStamp, businessParams);
+        System.err.println("业务参数:" + businessParams);
+
+        params.put("appId", "100000");
+        params.put("signType", "SHA256");
+        params.put("timestamp", timeStamp);
+        params.put("sign", sign.getSign());
+        params.put("bizContent", sign.getBizContent());
+        System.out.println(params);
+        JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(params));
         return jsonObject;
     }
 
